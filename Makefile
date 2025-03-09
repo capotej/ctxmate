@@ -1,2 +1,2 @@
 protos:
-	protoc -I schema/ --python_out=ctxmate --pyi_out=ctxmate schema/schema.proto
+	protoc -I schema/ --python_out=src/ctxmate --pyi_out=src/ctxmate schema/schema.proto

@@ -9,10 +9,10 @@ class BackendInput(_message.Message):
     CTX_FIELD_NUMBER: _ClassVar[int]
     MODEL_NAME_FIELD_NUMBER: _ClassVar[int]
     SYSTEM_PROMPT_FIELD_NUMBER: _ClassVar[int]
-    ctx: str
+    ctx: bytes
     model_name: str
     system_prompt: str
-    def __init__(self, ctx: _Optional[str] = ..., model_name: _Optional[str] = ..., system_prompt: _Optional[str] = ...) -> None: ...
+    def __init__(self, ctx: _Optional[bytes] = ..., model_name: _Optional[str] = ..., system_prompt: _Optional[str] = ...) -> None: ...
 
 class BackendOutput(_message.Message):
     __slots__ = ("output",)

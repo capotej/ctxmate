@@ -6,5 +6,27 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "click>=8.1.8",
-    "protobuf>=5,<6",
+    "types-click",
+    "protobuf~=5.29.1",
+    "types-protobuf==5.29.1.20250208"
+]
+
+[tool.pyright]
+include = ["src"]
+exclude = [
+    "**/node_modules",
+    "**/__pycache__",
+    "schema_pb2.py"
+]
+defineConstant = { DEBUG = true }
+stubPath = "src/stubs"
+
+reportMissingImports = "error"
+reportMissingTypeStubs = true
+
+pythonVersion = "3.13"
+pythonPlatform = "Darwin"
+
+executionEnvironments = [
+  { root = "src" }
 ]
