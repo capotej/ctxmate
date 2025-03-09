@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package ctxmate;
+
+message BackendInput {
+    string ctx = 1;
+    string model_name = 2;
+    string system_prompt = 3;
+}
+
+message BackendOutput {
+    string output = 1;
+}
