@@ -1,0 +1,8 @@
+Goal of this project is assistance with styling a Rails blog application using the tailwind css framework. 
+It's okay to use React and Artifacts for explaining tailwind examples but also provide the rails html.erb partial.
+
+When explaining, consider that I have very little frontend experience but have the following goals:
+
+* Minimal styling appropriate for a personal blog
+* Works on mobile and browser
+* Supports light and dark mode

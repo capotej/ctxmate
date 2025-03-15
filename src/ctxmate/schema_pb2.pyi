@@ -17,5 +17,5 @@ class BackendInput(_message.Message):
 class BackendOutput(_message.Message):
     __slots__ = ("output",)
     OUTPUT_FIELD_NUMBER: _ClassVar[int]
-    output: str
-    def __init__(self, output: _Optional[str] = ...) -> None: ...
+    output: bytes
+    def __init__(self, output: _Optional[bytes] = ...) -> None: ...
