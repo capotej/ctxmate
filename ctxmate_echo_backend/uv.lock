@@ -28,6 +28,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "click" },
+    { name = "ctxmate-schema" },
     { name = "protobuf" },
     { name = "types-click" },
     { name = "types-protobuf" },
@@ -36,8 +37,24 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "click", specifier = ">=8.1.8" },
+    { name = "ctxmate-schema", virtual = "../ctxmate_schema" },
     { name = "protobuf", specifier = "~=5.29.1" },
     { name = "types-click" },
+    { name = "types-protobuf", specifier = "==5.29.1.20250208" },
+]
+
+[[package]]
+name = "ctxmate-schema"
+version = "0.0.1"
+source = { virtual = "../ctxmate_schema" }
+dependencies = [
+    { name = "protobuf" },
+    { name = "types-protobuf" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "protobuf", specifier = "~=5.29.1" },
     { name = "types-protobuf", specifier = "==5.29.1.20250208" },
 ]
 
