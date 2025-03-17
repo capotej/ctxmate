@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "path": "ctxmate_cli"
+    },
+    {
+      "path": "ctxmate_schema"
+    },
+    {
+      "path": "ctxmate_echo_backend"
+    }
+  ]
+}

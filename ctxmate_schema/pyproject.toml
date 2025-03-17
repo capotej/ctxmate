@@ -1,0 +1,10 @@
+[project]
+name = "ctxmate-schema"
+version = "0.0.1"
+description = "Generated Protobuf types for ctxmate"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "protobuf~=5.29.1",
+    "types-protobuf==5.29.1.20250208"
+]
