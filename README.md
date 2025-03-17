@@ -27,5 +27,7 @@ Run a prompt named PROMPT
 
 
 
+# Local Development
 
-
+From src/ctxmate/ctxmate_cli:
+    uv pip install ../ctxmate_echo_backend
