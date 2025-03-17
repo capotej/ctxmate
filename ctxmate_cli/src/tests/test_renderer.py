@@ -15,6 +15,10 @@ def test_render():
 
     with open(current_file_base + "/prompts/001-generate-readme.txt", "r") as f:
         readme = f.read()
+    
+    with open(current_file_base + "/prompts/system.txt", "r") as f:
+        systemp = f.read()
 
     combined = "\n".join([project,readme])
     assert combined == rndr.final_prompt
+    assert systemp == rndr.system_prompt
