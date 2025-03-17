@@ -17,10 +17,10 @@ class Renderer:
         )
         self.config = cfg
 
-    def render(self, name:str) -> Rendered:
+    def render(self, name:str, *args) -> Rendered:
         system_prompt = self.env.get_template("system.txt")
         project_tmpl = self.env.get_template("project.txt")
         prompt_tmpl = self.env.get_template(name)
-        final_prompt = "\n".join([project_tmpl.render(), prompt_tmpl.render()])
-        rendered = Rendered(system_prompt.render(), final_prompt)
+        final_prompt = "\n".join([project_tmpl.render(*args), prompt_tmpl.render(*args)])
+        rendered = Rendered(system_prompt.render(*args), final_prompt)
         return rendered

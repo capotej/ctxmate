@@ -9,7 +9,7 @@ def test_render():
     print(current_file_base)
     cfg = Config(prompts_directory=current_file_base + "/prompts")
     rdr = Renderer(cfg)
-    rndr = rdr.render("001-generate-readme.txt")
+    rndr = rdr.render("001-generate-readme.txt", [])
     with open(current_file_base + "/prompts/project.txt", "r") as f:
         project = f.read()
 
