@@ -3,7 +3,8 @@ import io
 import subprocess
 from ctxmate_schema import schema_pb2
 import sys
-
+from rich.console import Console
+from rich.columns import Columns
 from ctxmate_cli.config import Config
 from ctxmate_cli.renderer import Renderer
 from ctxmate_cli.prompt_loader import PromptLoader
@@ -15,16 +16,17 @@ def cli():
 # TODO: --backend 
 # TODO: --input-files
 @click.command()
+@click.option("--template_vars", "-D", multiple=True)
 @click.argument("prompt", nargs=1)
-@click.argument("template_args", nargs=-1)
 def run(prompt:str, template_args:tuple[str,...]):
    """
    ctxmate run prompts/001-prompt.txt a_variable:foo b_variable:bar
    """
    cfg = Config()
    rdr = Renderer(cfg)
-   rndrd = rdr.render(prompt, template_args)
-   print(rndrd.final_prompt)
+   
+   # rndrd = rdr.render(prompt, template_args)
+   # print(rndrd.final_prompt)
 
 @click.command()
 def prompts():
@@ -33,7 +35,9 @@ def prompts():
    """
    cfg = Config()
    p = PromptLoader(cfg)
-   print(p.list_templates())
+   console = Console()
+   console.print(
+      Columns(p.list_templates(), title="prompts"))
 
 # TODO: --backend 
 # TODO: --input-files

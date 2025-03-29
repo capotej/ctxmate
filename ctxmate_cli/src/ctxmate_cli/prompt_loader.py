@@ -19,10 +19,12 @@ class PromptLoader(BaseLoader):
     def list_templates(self) -> list[str]:
         files = []
 
-        if os.path.exists(self.config.prompts_directory):
-            for file in os.listdir(self.config.prompts_directory):
-                if file == 'system.txt' or file == 'project.txt':
-                    continue
-                files.append(file)
+        if not os.path.exists(self.config.prompts_directory):
+            return files
+
+        for file in os.listdir(self.config.prompts_directory):
+            if file == 'system.txt' or file == 'project.txt':
+                continue
+            files.append(file)
 
         return files
