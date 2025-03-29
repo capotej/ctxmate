@@ -6,7 +6,6 @@ import os
 def test_render():
     current_file_path = os.path.abspath(__file__)
     current_file_base = os.path.dirname(current_file_path)
-    print(current_file_base)
     cfg = Config(prompts_directory=current_file_base + "/prompts")
     rdr = Renderer(cfg)
     rndr = rdr.render("001-generate-readme.txt", [])

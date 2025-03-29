@@ -6,6 +6,7 @@ import sys
 
 from ctxmate_cli.config import Config
 from ctxmate_cli.renderer import Renderer
+from ctxmate_cli.prompt_loader import PromptLoader
 
 @click.group()
 def cli():
@@ -24,6 +25,15 @@ def run(prompt:str, template_args:tuple[str,...]):
    rdr = Renderer(cfg)
    rndrd = rdr.render(prompt, template_args)
    print(rndrd.final_prompt)
+
+@click.command()
+def prompts():
+   """
+   ctxmate prompts
+   """
+   cfg = Config()
+   p = PromptLoader(cfg)
+   print(p.list_templates())
 
 # TODO: --backend 
 # TODO: --input-files
@@ -44,3 +54,4 @@ def prompt(input:io.BufferedReader):
    sys.stdout.write(bo.output.decode("utf-8"))
 
 cli.add_command(run)
+cli.add_command(prompts)

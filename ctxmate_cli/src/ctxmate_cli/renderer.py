@@ -1,21 +1,20 @@
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from jinja2 import Environment
 from dataclasses import dataclass
 
 from ctxmate_cli.config import Config
+from ctxmate_cli.prompt_loader import PromptLoader
 
 @dataclass
 class Rendered:
     system_prompt: str
     final_prompt: str
 
-
 class Renderer:
     def __init__(self, cfg:Config):
         self.env = Environment(
-            loader=FileSystemLoader(cfg.prompts_directory),
+            loader=PromptLoader(cfg),
             autoescape=False
         )
-        self.config = cfg
 
     def render(self, name:str, *args) -> Rendered:
         system_prompt = self.env.get_template("system.txt")

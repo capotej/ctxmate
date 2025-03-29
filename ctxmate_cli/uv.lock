@@ -35,6 +35,7 @@ dependencies = [
     { name = "toml" },
     { name = "types-click" },
     { name = "types-protobuf" },
+    { name = "xdg-base-dirs" },
 ]
 
 [package.dev-dependencies]
@@ -52,6 +53,7 @@ requires-dist = [
     { name = "toml", specifier = ">=0.10.2" },
     { name = "types-click" },
     { name = "types-protobuf", specifier = "==5.29.1.20250208" },
+    { name = "xdg-base-dirs", specifier = ">=6.0.2" },
 ]
 
 [package.metadata.requires-dev]
@@ -204,4 +206,13 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/ff/75/8effaebae86ae9e489d4d453b30c6da728e8a9267a261418d476c5c2fbe6/types_protobuf-5.29.1.20250208.tar.gz", hash = "sha256:c1acd6a59ab554dbe09b5d1fa7dd701e2fcfb2212937a3af1c03b736060b792a", size = 59330 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/96/e9/095c36efdc9dbb1df75ce42f37c0de6a6879aad937a08f0b97942b7c5968/types_protobuf-5.29.1.20250208-py3-none-any.whl", hash = "sha256:c5f8bfb4afdc1b5cbca1848f2c8b361a2090add7401f410b22b599ef647bf483", size = 73925 },
+]
+
+[[package]]
+name = "xdg-base-dirs"
+version = "6.0.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/bf/d0/bbe05a15347538aaf9fa5b51ac3b97075dfb834931fcb77d81fbdb69e8f6/xdg_base_dirs-6.0.2.tar.gz", hash = "sha256:950504e14d27cf3c9cb37744680a43bf0ac42efefc4ef4acf98dc736cab2bced", size = 4085 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fc/03/030b47fd46b60fc87af548e57ff59c2ca84b2a1dadbe721bb0ce33896b2e/xdg_base_dirs-6.0.2-py3-none-any.whl", hash = "sha256:3c01d1b758ed4ace150ac960ac0bd13ce4542b9e2cdf01312dcda5012cfebabe", size = 4747 },
 ]
