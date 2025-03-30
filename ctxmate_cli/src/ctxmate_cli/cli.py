@@ -5,7 +5,8 @@ from ctxmate_schema import schema_pb2
 import sys
 from rich import console
 from rich.console import Console
-from rich.columns import Columns
+from rich.table import Table
+from jinja2 import Environment, meta
 from ctxmate_cli.config import Config
 from ctxmate_cli.renderer import Renderer
 from ctxmate_cli.project_prompt_loader import ProjectPromptLoader
@@ -45,11 +46,22 @@ def prompts():
     ctxmate prompts
     """
     cfg = Config()
-    p = ProjectPromptLoader(cfg)
-    b = BuiltinPromptLoader()
+    pl = ProjectPromptLoader(cfg)
+    bl = BuiltinPromptLoader()
+    env = Environment()
+    table = Table(title="Prompts")
+    table.add_column("Name")
+    table.add_column("Variables")
+    for t in bl.list_templates():
+        tmpl = bl.get_source(env, t)
+        ast = env.parse(tmpl[0])
+        undeclared = meta.find_undeclared_variables(ast)
+        table.add_row("builtin/" + t, ",".join(list(undeclared)))
+
     console = Console()
-    console.print(Columns(b.list_templates(), title="Builtin prompts"))
-    console.print(Columns(p.list_templates(), title="Project Prompts"))
+    console.print(table)
+
+    # console.print(Columns(p.list_templates(), title="Project Prompts"))
 
 
 # TODO: --backend

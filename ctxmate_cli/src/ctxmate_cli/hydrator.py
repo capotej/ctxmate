@@ -59,6 +59,7 @@ class Hydrator:
     def dict(self) -> dict[str, str]:
         # ("key=val=1=2",) -> { "key": "val=1=2", }
         parsed_defs: dict[str, str] = dict([d.split("=", 1) for d in self.defines])
+        # defer hydrating to handler for support url schemes
         parsed_vals: dict[str, str] = {
             k: handle_possible_url(v) for k, v in parsed_defs.items()
         }
