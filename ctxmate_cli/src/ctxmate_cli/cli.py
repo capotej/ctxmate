@@ -17,22 +17,21 @@ def cli():
     pass
 
 
-# TODO: --backend
-# TODO: --input-files
 @click.command()
 @click.argument("prompt", nargs=1)
 @click.option("--define", "-D", multiple=True)
-@click.option("--backend", "-b")
-@click.argument("std_input", type=click.File("r"), required=False)
-def run(prompt: str, define, backend: str, std_input: io.BufferedReader | None):
+@click.option("--backend", "-b", show_default=True, default="ctxmate-echo-backend", required=False)
+@click.argument("stdin", type=click.File("r"), required=False)
+def run(prompt: str, define, backend: str, stdin: io.BufferedReader | None):
     """
     ctxmate run builtin/summarize -D a_variable=foo -D b_variable=bar
     """
-    cfg = Config()
+    cfg = Config(backend=backend)
     rdr = Renderer(cfg)
     console = Console()
-    if std_input:
-        inp = str(std_input.read())
+    console.print(define)
+    if stdin:
+        inp = str(stdin.read())
         console.print(rdr.render(prompt, {"input": inp}))
     else:
         console.print(rdr.render(prompt))

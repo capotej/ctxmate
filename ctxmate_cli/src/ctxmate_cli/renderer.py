@@ -12,7 +12,6 @@ class Rendered:
     system_prompt: str
     final_prompt: str
 
-
 class Renderer:
     def __init__(self, cfg: Config):
         self.env = Environment(
