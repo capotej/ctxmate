@@ -8,7 +8,8 @@ from rich.console import Console
 from rich.columns import Columns
 from ctxmate_cli.config import Config
 from ctxmate_cli.renderer import Renderer
-from ctxmate_cli.project_prompt_loader import PromptLoader
+from ctxmate_cli.project_prompt_loader import ProjectPromptLoader
+from ctxmate_cli.builtin_prompt_loader import BuiltinPromptLoader
 
 
 @click.group()
@@ -24,13 +25,12 @@ def cli():
 @click.option("--backend", "-b")
 def run(prompt: str, define, backend: str):
     """
-    ctxmate run prompts/001-prompt.txt -D a_variable=foo -D b_variable=bar
+    ctxmate run builtin/summarize -D a_variable=foo -D b_variable=bar
     """
     cfg = Config()
     rdr = Renderer(cfg)
     console = Console()
-    console.print("prompt " + prompt)
-    console.print("template_vars " + ",".join(define))
+    console.print(rdr.render(prompt))
 
 @click.command()
 def prompts():
@@ -38,9 +38,11 @@ def prompts():
     ctxmate prompts
     """
     cfg = Config()
-    p = PromptLoader(cfg)
+    p = ProjectPromptLoader(cfg)
+    b = BuiltinPromptLoader()
     console = Console()
-    console.print(Columns(p.list_templates(), title="prompts"))
+    console.print(Columns(b.list_templates(), title="Builtin prompts"))
+    console.print(Columns(p.list_templates(), title="Project Prompts"))
 
 
 # TODO: --backend

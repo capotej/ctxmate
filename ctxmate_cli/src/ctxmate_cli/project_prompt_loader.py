@@ -16,7 +16,7 @@ class ProjectPromptLoader(BaseLoader):
             source = f.read()
         return source, path, lambda: False
 
-    def list_project_prompts(self) -> list[str]:
+    def list_templates(self) -> list[str]:
         files = []
 
         if not os.path.exists(self.config.prompts_directory):
