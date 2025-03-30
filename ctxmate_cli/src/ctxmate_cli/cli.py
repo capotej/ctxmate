@@ -33,7 +33,7 @@ def run(prompt: str, define, backend: str, std_input: io.BufferedReader | None):
     console = Console()
     if std_input:
         inp = str(std_input.read())
-        console.print(rdr.render(prompt, {"input":inp}))
+        console.print(rdr.render(prompt, {"input": inp}))
     else:
         console.print(rdr.render(prompt))
 
