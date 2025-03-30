@@ -8,7 +8,7 @@ from rich.console import Console
 from rich.columns import Columns
 from ctxmate_cli.config import Config
 from ctxmate_cli.renderer import Renderer
-from ctxmate_cli.prompt_loader import PromptLoader
+from ctxmate_cli.project_prompt_loader import PromptLoader
 
 
 @click.group()

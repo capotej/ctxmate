@@ -1,11 +1,10 @@
 from jinja2 import BaseLoader, TemplateNotFound
-from os.path import join, exists
 from ctxmate_cli.config import Config
 
 import os
+from os.path import join, exists
 
-
-class PromptLoader(BaseLoader):
+class ProjectPromptLoader(BaseLoader):
     def __init__(self, c: Config):
         self.config = c
 
@@ -17,7 +16,7 @@ class PromptLoader(BaseLoader):
             source = f.read()
         return source, path, lambda: False
 
-    def list_templates(self) -> list[str]:
+    def list_project_prompts(self) -> list[str]:
         files = []
 
         if not os.path.exists(self.config.prompts_directory):

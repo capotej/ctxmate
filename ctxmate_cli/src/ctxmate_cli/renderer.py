@@ -1,8 +1,11 @@
-from jinja2 import Environment
+from typing import Callable
+from jinja2 import Environment, PrefixLoader, TemplateNotFound, Template
 from dataclasses import dataclass
 
 from ctxmate_cli.config import Config
-from ctxmate_cli.prompt_loader import PromptLoader
+from ctxmate_cli.project_prompt_loader import ProjectPromptLoader
+from ctxmate_cli.builtin_prompt_loader import BuiltinPromptLoader
+
 
 
 @dataclass
@@ -13,14 +16,33 @@ class Rendered:
 
 class Renderer:
     def __init__(self, cfg: Config):
-        self.env = Environment(loader=PromptLoader(cfg), autoescape=False)
+        self.env = Environment(
+            loader=PrefixLoader({
+                'project': ProjectPromptLoader(cfg),
+                'builtin': BuiltinPromptLoader()
+            }),
+            autoescape=False)
 
     def render(self, name: str, *args) -> Rendered:
-        system_prompt = self.env.get_template("system.txt")
-        project_tmpl = self.env.get_template("project.txt")
+        try:
+            system_prompt = self.env.get_template("project/system.txt")
+        except TemplateNotFound:
+            system_prompt = self.env.get_template("builtin/system.txt")
+
+        ctxs: list[Template] = []
+
+        try:
+            project_tmpl: Template = self.env.get_template("project/project.txt")
+            ctxs.append(project_tmpl)
+        except TemplateNotFound:
+            pass
+        
         prompt_tmpl = self.env.get_template(name)
-        final_prompt = "\n".join(
-            [project_tmpl.render(*args), prompt_tmpl.render(*args)]
-        )
+        ctxs.append(prompt_tmpl)
+
+        render: Callable[[Template], str] = lambda x : x.render(*args)
+        rendered_ctxs: list[str] = list(map(render, ctxs))
+
+        final_prompt = "\n".join(rendered_ctxs)
         rendered = Rendered(system_prompt.render(*args), final_prompt)
         return rendered
