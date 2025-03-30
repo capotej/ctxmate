@@ -4,6 +4,7 @@ from ctxmate_cli.config import Config
 import os
 from os.path import join, exists
 
+
 class ProjectPromptLoader(BaseLoader):
     def __init__(self, c: Config):
         self.config = c

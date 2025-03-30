@@ -17,6 +17,7 @@ def test_project_prompts():
     expected_templates.sort()
     assert list_templates == expected_templates
 
+
 def test_builtin_prompts():
     p = BuiltinPromptLoader()
     list_templates = p.list_templates()

@@ -32,6 +32,7 @@ def run(prompt: str, define, backend: str):
     console = Console()
     console.print(rdr.render(prompt))
 
+
 @click.command()
 def prompts():
     """

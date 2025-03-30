@@ -7,7 +7,6 @@ from ctxmate_cli.project_prompt_loader import ProjectPromptLoader
 from ctxmate_cli.builtin_prompt_loader import BuiltinPromptLoader
 
 
-
 @dataclass
 class Rendered:
     system_prompt: str
@@ -17,11 +16,11 @@ class Rendered:
 class Renderer:
     def __init__(self, cfg: Config):
         self.env = Environment(
-            loader=PrefixLoader({
-                'project': ProjectPromptLoader(cfg),
-                'builtin': BuiltinPromptLoader()
-            }),
-            autoescape=False)
+            loader=PrefixLoader(
+                {"project": ProjectPromptLoader(cfg), "builtin": BuiltinPromptLoader()}
+            ),
+            autoescape=False,
+        )
 
     def render(self, name: str, *args) -> Rendered:
         try:
@@ -36,11 +35,11 @@ class Renderer:
             ctxs.append(project_tmpl)
         except TemplateNotFound:
             pass
-        
+
         prompt_tmpl = self.env.get_template(name)
         ctxs.append(prompt_tmpl)
 
-        render: Callable[[Template], str] = lambda x : x.render(*args)
+        render: Callable[[Template], str] = lambda x: x.render(*args)
         rendered_ctxs: list[str] = list(map(render, ctxs))
 
         final_prompt = "\n".join(rendered_ctxs)
