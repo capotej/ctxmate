@@ -20,7 +20,9 @@ def cli():
 @click.command()
 @click.argument("prompt", nargs=1)
 @click.option("--define", "-D", multiple=True)
-@click.option("--backend", "-b", show_default=True, default="ctxmate-echo-backend", required=False)
+@click.option(
+    "--backend", "-b", show_default=True, default="ctxmate-echo-backend", required=False
+)
 @click.argument("stdin", type=click.File("r"), required=False)
 def run(prompt: str, define, backend: str, stdin: io.BufferedReader | None):
     """
