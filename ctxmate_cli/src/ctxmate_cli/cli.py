@@ -3,6 +3,7 @@ import io
 import subprocess
 from ctxmate_schema import schema_pb2
 import sys
+from rich import console
 from rich.console import Console
 from rich.columns import Columns
 from ctxmate_cli.config import Config
@@ -18,28 +19,28 @@ def cli():
 # TODO: --backend
 # TODO: --input-files
 @click.command()
-@click.option("--template_vars", "-D", multiple=True)
 @click.argument("prompt", nargs=1)
-def run(prompt: str, template_args: tuple[str, ...]):
-    """
-    ctxmate run prompts/001-prompt.txt a_variable:foo b_variable:bar
-    """
-    cfg = Config()
-    rdr = Renderer(cfg)
-
-    # rndrd = rdr.render(prompt, template_args)
-    # print(rndrd.final_prompt)
-
+@click.option("--define", "-D", multiple=True)
+def run(prompt: str, define):
+   """
+   ctxmate run prompts/001-prompt.txt -D a_variable=foo -D b_variable=bar
+   """
+   cfg = Config()
+   rdr = Renderer(cfg)
+   console = Console()
+   console.print("prompt " + prompt)
+   console.print("template_vars " + ",".join(define))
+    
 
 @click.command()
 def prompts():
-    """
-    ctxmate prompts
-    """
-    cfg = Config()
-    p = PromptLoader(cfg)
-    console = Console()
-    console.print(Columns(p.list_templates(), title="prompts"))
+   """
+   ctxmate prompts
+   """
+   cfg = Config()
+   p = PromptLoader(cfg)
+   console = Console()
+   console.print(Columns(p.list_templates(), title="prompts"))
 
 
 # TODO: --backend
@@ -47,20 +48,21 @@ def prompts():
 @click.command()
 @click.argument("input", type=click.File("rb"))
 def prompt(input: io.BufferedReader):
-    """This script works similar to the Unix `cat` command but it writes
-    inout - foo.txt
-    """
+   """
+   This script works similar to the Unix `cat` command but it writes
+   inout - foo.txt
+   """
 
-    bi = schema_pb2.BackendInput()
-    bi.ctx = input.read()
-    i = bi.SerializeToString()
-    backend_output: subprocess.CompletedProcess = subprocess.run(
-        ["ctxmate-echo-backend"], shell=True, input=i, capture_output=True, check=True
-    )
-    bo = schema_pb2.BackendOutput()
-    bo.output = backend_output.stdout
-    bo.ParseFromString(i)
-    sys.stdout.write(bo.output.decode("utf-8"))
+   bi = schema_pb2.BackendInput()
+   bi.ctx = input.read()
+   i = bi.SerializeToString()
+   backend_output: subprocess.CompletedProcess = subprocess.run(
+      ["ctxmate-echo-backend"], shell=True, input=i, capture_output=True, check=True
+   )
+   bo = schema_pb2.BackendOutput()
+   bo.output = backend_output.stdout
+   bo.ParseFromString(i)
+   sys.stdout.write(bo.output.decode("utf-8"))
 
 
 cli.add_command(run)

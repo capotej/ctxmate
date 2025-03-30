@@ -25,7 +25,7 @@ exclude = [
     "**/__pycache__",
 ]
 defineConstant = { DEBUG = true }
-# stubPath = "src/stubs"
+# stubPath = "../ctxmate_schema/src/ctxmate_schema"
 
 reportMissingImports = "error"
 reportMissingTypeStubs = true
