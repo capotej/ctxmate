@@ -5,7 +5,7 @@ from ctxmate_cli.config import Config
 class BuiltinPromptLoader(DictLoader):
     def __init__(self):
         builtins = {
-            "summarize.txt": "Summarize the following:",
+            "summarize.txt": "Summarize the following: {{input}}",
             "system.txt": "You are a helpful assistant",
         }
         super().__init__(builtins)

@@ -23,14 +23,19 @@ def cli():
 @click.argument("prompt", nargs=1)
 @click.option("--define", "-D", multiple=True)
 @click.option("--backend", "-b")
-def run(prompt: str, define, backend: str):
+@click.argument("std_input", type=click.File("r"), required=False)
+def run(prompt: str, define, backend: str, std_input: io.BufferedReader | None):
     """
     ctxmate run builtin/summarize -D a_variable=foo -D b_variable=bar
     """
     cfg = Config()
     rdr = Renderer(cfg)
     console = Console()
-    console.print(rdr.render(prompt))
+    if std_input:
+        inp = str(std_input.read())
+        console.print(rdr.render(prompt, {"input":inp}))
+    else:
+        console.print(rdr.render(prompt))
 
 
 @click.command()
