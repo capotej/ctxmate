@@ -1,0 +1,2 @@
+{% set description = "this is a description" %}
+This prompt supports using variables like {{a_variable}}.
