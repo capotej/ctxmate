@@ -90,5 +90,6 @@ def prompts(prompts_dir: str):
 
     # console.print(Columns(p.list_templates(), title="Project Prompts"))
 
+
 cli.add_command(render)
 cli.add_command(prompts)
