@@ -28,7 +28,9 @@ def cli():
     "--prompts-dir", "-P", show_default=True, default="prompts", required=False
 )
 @click.argument("stdin", type=click.File("r"), required=False)
-def run(prompt: str, define, backend: str, prompts_dir: str, stdin: io.BufferedReader | None):
+def run(
+    prompt: str, define, backend: str, prompts_dir: str, stdin: io.BufferedReader | None
+):
     """
     ctxmate run builtin/summarize -D a_variable=foo -D b_variable=bar
     """
@@ -59,7 +61,7 @@ def prompts(prompts_dir: str):
     table.add_column("Name")
     table.add_column("Variables")
     table.add_column("Description")
-    
+
     # TODO replace with prefixloader?
     # TODO move to renderer
     for t in bl.list_templates():
@@ -69,7 +71,7 @@ def prompts(prompts_dir: str):
         undeclared = meta.find_undeclared_variables(ast)
         description = find_description(ast)
         table.add_row("builtin/" + t, ",".join(list(undeclared)), description)
-    
+
     for t in pl.list_templates():
         tmpl = pl.get_source(env, t)
         ast = env.parse(tmpl[0])

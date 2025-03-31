@@ -13,7 +13,11 @@ def test_project_prompts():
     p = ProjectPromptLoader(cfg)
     list_templates = p.list_templates()
     list_templates.sort()
-    expected_templates = ["003-test-descriptions.txt", "002-test-variables.txt", "001-generate-readme.txt"]
+    expected_templates = [
+        "003-test-descriptions.txt",
+        "002-test-variables.txt",
+        "001-generate-readme.txt",
+    ]
     expected_templates.sort()
     assert list_templates == expected_templates
 
