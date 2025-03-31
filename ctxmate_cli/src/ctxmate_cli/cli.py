@@ -44,7 +44,19 @@ def render(
     if input:
         inp = str(input.read())
         vars["input"] = inp
-    console.print(rdr.render(prompt, vars))
+    rendered = rdr.render(prompt, vars)
+    # TODO extract to executor
+    bi = schema_pb2.BackendInput()
+    bi.ctx = rendered.final_prompt.encode("utf-8")
+    bi.system_prompt = rendered.system_prompt
+    i = bi.SerializeToString()
+    backend_output: subprocess.CompletedProcess = subprocess.run(
+        ["ctxmate-echo-backend"], shell=True, input=i, capture_output=True, check=True
+    )
+    bo = schema_pb2.BackendOutput()
+    bo.output = backend_output.stdout
+    bo.ParseFromString(i)
+    console.print(bo.output)
 
 
 @click.command()
@@ -77,29 +89,6 @@ def prompts(prompts_dir: str):
     console.print(table)
 
     # console.print(Columns(p.list_templates(), title="Project Prompts"))
-
-
-# TODO: --backend
-# TODO: --input-files
-@click.command()
-@click.argument("input", type=click.File("rb"))
-def prompt(input: io.BufferedReader):
-    """
-    This script works similar to the Unix `cat` command but it writes
-    inout - foo.txt
-    """
-
-    bi = schema_pb2.BackendInput()
-    bi.ctx = input.read()
-    i = bi.SerializeToString()
-    backend_output: subprocess.CompletedProcess = subprocess.run(
-        ["ctxmate-echo-backend"], shell=True, input=i, capture_output=True, check=True
-    )
-    bo = schema_pb2.BackendOutput()
-    bo.output = backend_output.stdout
-    bo.ParseFromString(i)
-    sys.stdout.write(bo.output.decode("utf-8"))
-
 
 cli.add_command(render)
 cli.add_command(prompts)
