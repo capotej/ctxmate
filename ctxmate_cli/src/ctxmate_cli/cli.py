@@ -9,6 +9,7 @@ from rich.table import Table
 from jinja2 import Environment, meta
 from ctxmate_cli.config import Config
 from ctxmate_cli.renderer import Renderer, find_description
+from ctxmate_cli.hydrator import Hydrator
 
 
 @click.group()
@@ -25,9 +26,9 @@ def cli():
 @click.option(
     "--prompts-dir", "-P", show_default=True, default="prompts", required=False
 )
-@click.argument("stdin", type=click.File("r"), required=False)
+@click.argument("input", type=click.File("r"), required=False)
 def run(
-    prompt: str, define, backend: str, prompts_dir: str, stdin: io.BufferedReader | None
+    prompt: str, define, backend: str, prompts_dir: str, input: io.BufferedReader | None
 ):
     """
     ctxmate run builtin/summarize -D a_variable=foo -D b_variable=bar
@@ -35,12 +36,12 @@ def run(
     cfg = Config(backend=backend, prompts_directory=prompts_dir)
     rdr = Renderer(cfg)
     console = Console()
-    console.print(define)
-    if stdin:
-        inp = str(stdin.read())
-        console.print(rdr.render(prompt, {"input": inp}))
-    else:
-        console.print(rdr.render(prompt))
+    h = Hydrator(define)
+    vars = h.dict()
+    if input:
+        inp = str(input.read())
+        vars["input"] = inp
+    console.print(rdr.render(prompt, vars))
 
 
 @click.command()
@@ -61,6 +62,7 @@ def prompts(prompts_dir: str):
 
     loader = rdr.loader
     for t in loader.list_templates():
+        # TODO move to renderer
         tmpl = loader.get_source(env, t)
         ast = env.parse(tmpl[0])
         # print(ast.dump())
