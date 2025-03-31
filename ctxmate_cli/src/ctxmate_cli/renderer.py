@@ -31,8 +31,8 @@ class Rendered:
 class Renderer:
     def __init__(self, cfg: Config):
         self.loader = PrefixLoader(
-                {"builtin": BuiltinPromptLoader(), "project": ProjectPromptLoader(cfg)}
-            )
+            {"builtin": BuiltinPromptLoader(), "project": ProjectPromptLoader(cfg)}
+        )
         self.env = Environment(loader=self.loader, autoescape=False)
 
     def get_loader(self):

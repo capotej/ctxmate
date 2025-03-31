@@ -26,7 +26,9 @@ def cli():
     "--prompts-dir", "-P", show_default=True, default="prompts", required=False
 )
 @click.argument("stdin", type=click.File("r"), required=False)
-def run(prompt: str, define, backend: str, prompts_dir: str, stdin: io.BufferedReader | None):
+def run(
+    prompt: str, define, backend: str, prompts_dir: str, stdin: io.BufferedReader | None
+):
     """
     ctxmate run builtin/summarize -D a_variable=foo -D b_variable=bar
     """
