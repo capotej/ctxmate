@@ -1,4 +1,3 @@
-from ast import Name
 from typing import Callable
 from jinja2 import Environment, PrefixLoader, TemplateNotFound, Template
 from jinja2 import nodes
@@ -31,12 +30,13 @@ class Rendered:
 
 class Renderer:
     def __init__(self, cfg: Config):
-        self.env = Environment(
-            loader=PrefixLoader(
-                {"project": ProjectPromptLoader(cfg), "builtin": BuiltinPromptLoader()}
-            ),
-            autoescape=False,
-        )
+        self.loader = PrefixLoader(
+                {"builtin": BuiltinPromptLoader(), "project": ProjectPromptLoader(cfg)}
+            )
+        self.env = Environment(loader=self.loader, autoescape=False)
+
+    def get_loader(self):
+        return self.loader
 
     def render(self, name: str, *args) -> Rendered:
         try:
