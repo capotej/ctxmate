@@ -10,6 +10,7 @@ from jinja2 import Environment, meta
 from ctxmate_cli.config import Config
 from ctxmate_cli.renderer import Renderer, find_description
 from ctxmate_cli.hydrator import Hydrator
+from ctxmate_cli.files import Files
 
 
 @click.group()
@@ -27,11 +28,12 @@ def cli():
 @click.option(
     "--prompts-dir", "-P", show_default=True, default="prompts", required=False
 )
+@click.option("--include", "-I", required=False, multiple=True)
 @click.argument("input", type=click.File("r"), required=False)
 # TODO --no-project argument to omit the project prompt
 # TODO --no-system argument to omit the system prompt
 def render(
-    prompt: str, define, backend: str, prompts_dir: str, input: io.BufferedReader | None
+    prompt: str, define, backend: str, prompts_dir: str, include, input: io.BufferedReader | None
 ):
     """
     ctxmate render builtin/summarize.txt -D a_variable=foo -D b_variable=bar
@@ -40,6 +42,9 @@ def render(
     rdr = Renderer(cfg)
     console = Console()
     h = Hydrator(define)
+    files = Files(include)
+    console.print(files.allowed_files())
+    console.print(files.render_files())
     vars = h.dict()
     if input:
         inp = str(input.read())

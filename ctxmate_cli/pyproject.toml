@@ -16,6 +16,7 @@ dependencies = [
     "xdg-base-dirs>=6.0.2",
     "rich>=13.9.4",
     "requests>=2.32.3",
+    "gitignore-parser>=0.1.11",
 ]
 [project.scripts]
 ctxmate = "ctxmate_cli.cli:cli"
