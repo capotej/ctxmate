@@ -46,6 +46,7 @@ def handle_possible_url(url: str) -> str:
             return url
 
 
+# TODO move to static func?
 class Hydrator:
     """
     Hydrator is in charge of receiving a tuple[str] and turning it into a dict

@@ -18,6 +18,7 @@ def cli():
 
 
 @click.command()
+# TODO should we take multiple prompts?
 @click.argument("prompt", nargs=1)
 @click.option("--define", "-D", multiple=True)
 @click.option(
@@ -27,11 +28,13 @@ def cli():
     "--prompts-dir", "-P", show_default=True, default="prompts", required=False
 )
 @click.argument("input", type=click.File("r"), required=False)
-def run(
+# TODO --no-project argument to omit the project prompt
+# TODO --no-system argument to omit the system prompt
+def render(
     prompt: str, define, backend: str, prompts_dir: str, input: io.BufferedReader | None
 ):
     """
-    ctxmate run builtin/summarize -D a_variable=foo -D b_variable=bar
+    ctxmate render builtin/summarize.txt -D a_variable=foo -D b_variable=bar
     """
     cfg = Config(backend=backend, prompts_directory=prompts_dir)
     rdr = Renderer(cfg)
@@ -98,5 +101,5 @@ def prompt(input: io.BufferedReader):
     sys.stdout.write(bo.output.decode("utf-8"))
 
 
-cli.add_command(run)
+cli.add_command(render)
 cli.add_command(prompts)

@@ -38,6 +38,7 @@ class Renderer:
     def get_loader(self):
         return self.loader
 
+    # Handle .txt or not for name
     def render(self, name: str, *args) -> Rendered:
         try:
             system_prompt = self.env.get_template("project/system.txt")
@@ -55,6 +56,7 @@ class Renderer:
         prompt_tmpl = self.env.get_template(name)
         ctxs.append(prompt_tmpl)
 
+        # TODO use a map comprehension instead
         render: Callable[[Template], str] = lambda x: x.render(*args)
         rendered_ctxs: list[str] = list(map(render, ctxs))
 
