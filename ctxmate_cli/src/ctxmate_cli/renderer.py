@@ -9,6 +9,7 @@ from ctxmate_cli.project_prompt_loader import ProjectPromptLoader
 from ctxmate_cli.builtin_prompt_loader import BuiltinPromptLoader
 
 import io
+import os
 
 
 def find_description(ast: nodes.Template):
@@ -72,6 +73,8 @@ class Renderer:
     def write_files(self, allowed_files: list[str]) -> None:
         with io.BytesIO() as buffer:
             for f in allowed_files:
+                if os.path.isdir(f):
+                    continue
                 # txtar format https://pkg.go.dev/golang.org/x/tools/txtar
                 buffer.write("-- {} --\n".format(f).encode("utf-8"))
                 with open(f, "rb") as file:

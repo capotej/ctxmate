@@ -20,6 +20,7 @@ def allowed(f: str) -> bool:
 
 
 class Files:
+    # TODO take a root dir here for .gitignore
     def __init__(self, files: tuple[str, ...]):
         self.files = list(files)
 
