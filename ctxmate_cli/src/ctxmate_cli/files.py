@@ -30,12 +30,3 @@ class Files:
 
         return [f for f in all_files if allowed(f)]
 
-    def render_files(self) -> bytes:
-        buffer = io.BytesIO()
-        for f in self.allowed_files():
-            buffer.write("-- {} --\n".format(f).encode("utf-8"))
-            with open(f, "rb") as file:
-                buffer.write(file.read())
-        result = buffer.getvalue()
-        buffer.close()
-        return result

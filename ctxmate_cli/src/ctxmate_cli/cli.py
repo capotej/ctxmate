@@ -39,20 +39,23 @@ def render(
     ctxmate render builtin/summarize.txt -D a_variable=foo -D b_variable=bar
     """
     cfg = Config(backend=backend, prompts_directory=prompts_dir)
-    rdr = Renderer(cfg)
-    console = Console()
-    h = Hydrator(define)
     files = Files(include)
-    console.print(files.allowed_files())
-    console.print(files.render_files())
+    rdr = Renderer(cfg)
+    # console.print(files.allowed_files())
+    # console.print(files.render_files())
+    rdr.write_files(files.allowed_files())
+
+    h = Hydrator(define)
     vars = h.dict()
     if input:
         inp = str(input.read())
         vars["input"] = inp
-    rendered = rdr.render(prompt, vars)
+    rdr.add_prompt(prompt)
+    rendered = rdr.render(vars)
+    
     # TODO extract to executor
     bi = schema_pb2.BackendInput()
-    bi.ctx = rendered.final_prompt.encode("utf-8")
+    bi.ctx = rendered.final_prompt
     bi.system_prompt = rendered.system_prompt
     i = bi.SerializeToString()
     backend_output: subprocess.CompletedProcess = subprocess.run(
@@ -61,6 +64,8 @@ def render(
     bo = schema_pb2.BackendOutput()
     bo.output = backend_output.stdout
     bo.ParseFromString(i)
+    
+    console = Console()
     console.print(bo.output)
 
 
