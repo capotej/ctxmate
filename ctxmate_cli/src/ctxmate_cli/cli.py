@@ -33,7 +33,12 @@ def cli():
 # TODO --no-project argument to omit the project prompt
 # TODO --no-system argument to omit the system prompt
 def render(
-    prompt: str, define, backend: str, prompts_dir: str, include, input: io.BufferedReader | None
+    prompt: str,
+    define,
+    backend: str,
+    prompts_dir: str,
+    include,
+    input: io.BufferedReader | None,
 ):
     """
     ctxmate render builtin/summarize.txt -D a_variable=foo -D b_variable=bar
@@ -52,7 +57,7 @@ def render(
         vars["input"] = inp
     rdr.add_prompt(prompt)
     rendered = rdr.render(vars)
-    
+
     # TODO extract to executor
     bi = schema_pb2.BackendInput()
     bi.ctx = rendered.final_prompt
@@ -64,7 +69,7 @@ def render(
     bo = schema_pb2.BackendOutput()
     bo.output = backend_output.stdout
     bo.ParseFromString(i)
-    
+
     console = Console()
     console.print(bo.output)
 

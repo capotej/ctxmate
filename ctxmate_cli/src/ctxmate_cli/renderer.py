@@ -32,6 +32,7 @@ class Rendered:
 
 class Renderer:
     """Renderers are backed by a BytesIO and are "disposable. Re-use Renderers at your own risk!"""
+
     def __init__(self, cfg: Config):
         self.loader = PrefixLoader(
             {"builtin": BuiltinPromptLoader(), "project": ProjectPromptLoader(cfg)}
@@ -44,7 +45,7 @@ class Renderer:
 
     def get_loader(self):
         return self.loader
-    
+
     # TODO Handle .txt or not for name
     # TODO Extract to `Renderable` "trait: Callable[...] -> bytes"
     def render(self, *args) -> Rendered:
@@ -52,19 +53,21 @@ class Renderer:
         self._write_system_prompt
         # TODO support --no-project
         self._add_project_prompt
-        
+
         # TODO use a map comprehension instead
         render: Callable[[Template], str] = lambda x: x.render(*args)
         rendered_ctxs: list[str] = list(map(render, self.prompts))
 
-        system_prompt = self.system_prompt.render(*args) if self.system_prompt != None else ""
+        system_prompt = (
+            self.system_prompt.render(*args) if self.system_prompt != None else ""
+        )
 
         with io.BytesIO() as buffer:
             buffer.write("\n".join(rendered_ctxs).encode("utf-8"))
             buffer.write(self.files)
             final_prompt = buffer.getvalue()
             return Rendered(system_prompt=system_prompt, final_prompt=final_prompt)
-    
+
     def write_files(self, allowed_files: list[str]) -> None:
         with io.BytesIO() as buffer:
             for f in allowed_files:
@@ -73,7 +76,7 @@ class Renderer:
                 with open(f, "rb") as file:
                     buffer.write(file.read())
             self.files = buffer.getvalue()
-    
+
     def add_prompt(self, name: str, *args) -> None:
         self.prompts.append(self.env.get_template(name))
 
@@ -82,10 +85,9 @@ class Renderer:
             self.system_prompt = self.env.get_template("project/system.txt")
         except TemplateNotFound:
             self.system_prompt = self.env.get_template("builtin/system.txt")
-    
+
     def _add_project_prompt(self) -> None:
         try:
             self.prompts.append(self.env.get_template("project/project.txt"))
         except TemplateNotFound:
             pass
-

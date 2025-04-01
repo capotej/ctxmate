@@ -2,6 +2,7 @@ import os
 
 from ctxmate_cli.files import Files
 
+
 def test_basic_files():
     current_file_path = os.path.abspath(__file__)
     current_file_base = os.path.dirname(current_file_path)
