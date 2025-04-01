@@ -1,3 +1,4 @@
+from collections import deque
 from typing import Callable
 from jinja2 import Environment, PrefixLoader, TemplateNotFound, Template
 from jinja2 import nodes
@@ -39,7 +40,7 @@ class Renderer:
         )
         self.env = Environment(loader=self.loader, autoescape=False)
         # NOTE future proofing for multi-prompt
-        self.prompts: list[Template] = []
+        self.prompts: deque[Template] = deque()
         self.system_prompt: Template | None = None
         self.files: bytes = bytes()
 
@@ -50,9 +51,9 @@ class Renderer:
     # TODO Extract to `Renderable` "trait: Callable[...] -> bytes"
     def render(self, *args) -> Rendered:
         # TODO support --no-system
-        self._write_system_prompt
+        self._write_system_prompt()
         # TODO support --no-project
-        self._add_project_prompt
+        self._add_project_prompt()
 
         # TODO use a map comprehension instead
         render: Callable[[Template], str] = lambda x: x.render(*args)
@@ -77,7 +78,7 @@ class Renderer:
                     buffer.write(file.read())
             self.files = buffer.getvalue()
 
-    def add_prompt(self, name: str, *args) -> None:
+    def add_prompt(self, name: str) -> None:
         self.prompts.append(self.env.get_template(name))
 
     def _write_system_prompt(self) -> None:
@@ -88,6 +89,6 @@ class Renderer:
 
     def _add_project_prompt(self) -> None:
         try:
-            self.prompts.append(self.env.get_template("project/project.txt"))
+            self.prompts.appendleft(self.env.get_template("project/project.txt"))
         except TemplateNotFound:
             pass
