@@ -35,6 +35,7 @@ class Context:
         """writes all the buffers out"""
         self.final_system_prompt = self.system_prompt_buffer.getvalue()
         self.system_prompt_buffer.close()
-        self.final_prompt = self.prompt_buffer.getvalue() + self.file_buffer.getvalue()
+        self.prompt_buffer.write(self.file_buffer.getvalue())
+        self.final_prompt = self.prompt_buffer.getvalue()
         self.prompt_buffer.close()
         self.file_buffer.close()
