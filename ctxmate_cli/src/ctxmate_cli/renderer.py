@@ -60,6 +60,8 @@ class Renderer:
         for p in self.prompts:
             ctx.add_prompt(p.render(*args)) 
 
+        ctx.write_files(allowed_files)
+
         ctx.flush()
         return Rendered(
             system_prompt=ctx.final_system_prompt, 

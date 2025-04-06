@@ -46,7 +46,6 @@ def render(
     cfg = Config(backend=backend, prompts_directory=prompts_dir)
     files = Files(include)
     rdr = Renderer(cfg)
-    # console.print(files.allowed_files())
     # console.print(files.render_files())
 
     h = Hydrator(define)
