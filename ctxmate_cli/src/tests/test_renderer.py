@@ -20,7 +20,10 @@ def test_render():
     with open(current_file_base + "/prompts/system.txt", "r") as f:
         systemp = f.read()
 
-    rndr = rdr.render()
+    rndr = rdr.render(allowed_files=[])
     combined = "\n".join([project, readme]).encode("utf-8")
-    assert combined == rndr.final_prompt
-    assert systemp == rndr.system_prompt
+
+    combined = project + "\n" + readme + "\n"
+
+    assert combined.encode("utf-8") == rndr.final_prompt
+    assert systemp + "\n" == rndr.system_prompt

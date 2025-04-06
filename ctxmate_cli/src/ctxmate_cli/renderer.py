@@ -5,6 +5,7 @@ from jinja2 import nodes
 from dataclasses import dataclass
 
 from ctxmate_cli.config import Config
+from ctxmate_cli.context import Context
 from ctxmate_cli.project_prompt_loader import ProjectPromptLoader
 from ctxmate_cli.builtin_prompt_loader import BuiltinPromptLoader
 
@@ -33,63 +34,50 @@ class Rendered:
 
 
 class Renderer:
-    """Renderers are backed by a BytesIO and are "disposable. Re-use Renderers at your own risk!"""
-
     def __init__(self, cfg: Config):
         self.loader = PrefixLoader(
             {"builtin": BuiltinPromptLoader(), "project": ProjectPromptLoader(cfg)}
         )
         self.env = Environment(loader=self.loader, autoescape=False)
-        # NOTE future proofing for multi-prompt
         self.prompts: deque[Template] = deque()
-        self.system_prompt: Template | None = None
-        self.files: bytes = bytes()
+        self.system_prompts: deque[Template] = deque()
 
     def get_loader(self):
         return self.loader
 
     # TODO Handle .txt or not for name
-    # TODO Extract to `Renderable` "trait: Callable[...] -> bytes"
-    def render(self, *args) -> Rendered:
+    def render(self, allowed_files: list[str], *args) -> Rendered:
         # TODO support --no-system
-        self._write_system_prompt()
+        self._add_default_system_prompt()
         # TODO support --no-project
         self._add_project_prompt()
+        
+        ctx = Context()
+        
+        for sp in self.system_prompts:
+            ctx.add_system_prompt(sp.render(*args)) 
 
-        # TODO use a map comprehension instead
-        render: Callable[[Template], str] = lambda x: x.render(*args)
-        rendered_ctxs: list[str] = list(map(render, self.prompts))
+        for p in self.prompts:
+            ctx.add_prompt(p.render(*args)) 
 
-        system_prompt = (
-            self.system_prompt.render(*args) if self.system_prompt != None else ""
+        ctx.flush()
+        return Rendered(
+            system_prompt=ctx.final_system_prompt.decode("utf-8"), 
+            final_prompt=ctx.final_prompt
         )
 
-        with io.BytesIO() as buffer:
-            buffer.write("\n".join(rendered_ctxs).encode("utf-8"))
-            buffer.write(self.files)
-            final_prompt = buffer.getvalue()
-            return Rendered(system_prompt=system_prompt, final_prompt=final_prompt)
-
-    def write_files(self, allowed_files: list[str]) -> None:
-        with io.BytesIO() as buffer:
-            for f in allowed_files:
-                if os.path.isdir(f):
-                    continue
-                # txtar format https://pkg.go.dev/golang.org/x/tools/txtar
-                buffer.write("-- {} --\n".format(f).encode("utf-8"))
-                with open(f, "rb") as file:
-                    buffer.write(file.read())
-            self.files = buffer.getvalue()
-
+    
     def add_prompt(self, name: str) -> None:
         self.prompts.append(self.env.get_template(name))
 
-    def _write_system_prompt(self) -> None:
+   
+    def _add_default_system_prompt(self) -> None:
         try:
-            self.system_prompt = self.env.get_template("project/system.txt")
+            self.system_prompts.appendleft(self.env.get_template("project/system.txt"))
         except TemplateNotFound:
-            self.system_prompt = self.env.get_template("builtin/system.txt")
+            self.system_prompts.appendleft(self.env.get_template("builtin/system.txt"))
 
+  
     def _add_project_prompt(self) -> None:
         try:
             self.prompts.appendleft(self.env.get_template("project/project.txt"))

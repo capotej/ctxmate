@@ -48,7 +48,6 @@ def render(
     rdr = Renderer(cfg)
     # console.print(files.allowed_files())
     # console.print(files.render_files())
-    rdr.write_files(files.allowed_files())
 
     h = Hydrator(define)
     vars = h.dict()
@@ -56,7 +55,7 @@ def render(
         inp = str(input.read())
         vars["input"] = inp
     rdr.add_prompt(prompt)
-    rendered = rdr.render(vars)
+    rendered = rdr.render(files.allowed_files(), vars)
 
     # TODO extract to executor
     bi = schema_pb2.BackendInput()
@@ -74,6 +73,7 @@ def render(
     console.print(bo.output)
 
 
+# TODO show system and project prompts
 @click.command()
 @click.option(
     "--prompts-dir", "-P", show_default=True, default="prompts", required=False
