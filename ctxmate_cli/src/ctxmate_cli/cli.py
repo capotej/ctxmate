@@ -60,7 +60,8 @@ def render(
     # TODO extract to executor
     bi = schema_pb2.BackendInput()
     bi.ctx = rendered.final_prompt
-    bi.system_prompt = rendered.system_prompt
+    # TODO move to bytes in ctxschema
+    bi.system_prompt = rendered.system_prompt.decode("utf-8")
     i = bi.SerializeToString()
     backend_output: subprocess.CompletedProcess = subprocess.run(
         ["ctxmate-echo-backend"], shell=True, input=i, capture_output=True, check=True

@@ -29,7 +29,7 @@ def find_description(ast: nodes.Template):
 
 @dataclass
 class Rendered:
-    system_prompt: str
+    system_prompt: bytes
     final_prompt: bytes
 
 
@@ -62,7 +62,7 @@ class Renderer:
 
         ctx.flush()
         return Rendered(
-            system_prompt=ctx.final_system_prompt.decode("utf-8"), 
+            system_prompt=ctx.final_system_prompt, 
             final_prompt=ctx.final_prompt
         )
 

@@ -26,4 +26,4 @@ def test_render():
     combined = project + "\n" + readme + "\n"
 
     assert combined.encode("utf-8") == rndr.final_prompt
-    assert systemp + "\n" == rndr.system_prompt
+    assert (systemp + "\n").encode("utf-8") == rndr.system_prompt
