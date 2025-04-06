@@ -51,35 +51,31 @@ class Renderer:
         self._add_default_system_prompt()
         # TODO support --no-project
         self._add_project_prompt()
-        
+
         ctx = Context()
-        
+
         for sp in self.system_prompts:
-            ctx.add_system_prompt(sp.render(*args)) 
+            ctx.add_system_prompt(sp.render(*args))
 
         for p in self.prompts:
-            ctx.add_prompt(p.render(*args)) 
+            ctx.add_prompt(p.render(*args))
 
         ctx.write_files(allowed_files)
 
         ctx.flush()
         return Rendered(
-            system_prompt=ctx.final_system_prompt, 
-            final_prompt=ctx.final_prompt
+            system_prompt=ctx.final_system_prompt, final_prompt=ctx.final_prompt
         )
 
-    
     def add_prompt(self, name: str) -> None:
         self.prompts.append(self.env.get_template(name))
 
-   
     def _add_default_system_prompt(self) -> None:
         try:
             self.system_prompts.appendleft(self.env.get_template("project/system.txt"))
         except TemplateNotFound:
             self.system_prompts.appendleft(self.env.get_template("builtin/system.txt"))
 
-  
     def _add_project_prompt(self) -> None:
         try:
             self.prompts.appendleft(self.env.get_template("project/project.txt"))

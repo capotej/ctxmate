@@ -1,5 +1,6 @@
 from ctxmate_cli.context import Context
 
+
 def test_basic_context():
     c = Context()
     c.add_system_prompt("this is a system prompt")
