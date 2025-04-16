@@ -58,9 +58,8 @@ def render(
 
     # TODO extract to executor
     bi = schema_pb2.BackendInput()
-    bi.ctx = rendered.final_prompt
-    # TODO move to bytes in ctxschema
-    bi.system_prompt = rendered.system_prompt.decode("utf-8")
+    bi.system_prompt = rendered.system_prompt
+    bi.context = rendered.final_prompt
     i = bi.SerializeToString()
     backend_output: subprocess.CompletedProcess = subprocess.run(
         ["ctxmate-echo-backend"], shell=True, input=i, capture_output=True, check=True
@@ -85,12 +84,15 @@ def prompts(prompts_dir: str):
     cfg = Config(prompts_directory=prompts_dir)
     rdr = Renderer(cfg)
     env = Environment()
-    table = Table(title="Prompts")
+    table = Table(title="Available Prompts")
     table.add_column("Name")
     table.add_column("Variables")
+    table.add_column("Included By Default")
     table.add_column("Description")
 
     loader = rdr.loader
+    overrides_default_system_prompt: bool = len([x for x in loader.list_templates() if "project/system.txt" in x]) == 0
+
     for t in loader.list_templates():
         # TODO move to renderer
         tmpl = loader.get_source(env, t)
@@ -98,7 +100,17 @@ def prompts(prompts_dir: str):
         # print(ast.dump())
         undeclared = meta.find_undeclared_variables(ast)
         description = find_description(ast)
-        table.add_row(t, ",".join(list(undeclared)), description)
+        if overrides_default_system_prompt:
+            if "project/system.txt" in t:
+                table.add_row(t, ",".join(list(undeclared)), "Yes", description)
+        else:
+            if "builtin/system.txt" in t:
+                table.add_row(t, ",".join(list(undeclared)), "Yes", description)
+            
+        if "project/project.txt" in t in t:
+            table.add_row(t, ",".join(list(undeclared)), "Yes", description)
+        else:
+            table.add_row(t, ",".join(list(undeclared)), "", description)
 
     console = Console()
     console.print(table)

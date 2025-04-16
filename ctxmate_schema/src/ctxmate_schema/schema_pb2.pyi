@@ -5,14 +5,12 @@ from typing import ClassVar as _ClassVar, Optional as _Optional
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class BackendInput(_message.Message):
-    __slots__ = ("ctx", "model_name", "system_prompt")
-    CTX_FIELD_NUMBER: _ClassVar[int]
-    MODEL_NAME_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("system_prompt", "context")
     SYSTEM_PROMPT_FIELD_NUMBER: _ClassVar[int]
-    ctx: bytes
-    model_name: str
-    system_prompt: str
-    def __init__(self, ctx: _Optional[bytes] = ..., model_name: _Optional[str] = ..., system_prompt: _Optional[str] = ...) -> None: ...
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    system_prompt: bytes
+    context: bytes
+    def __init__(self, system_prompt: _Optional[bytes] = ..., context: _Optional[bytes] = ...) -> None: ...
 
 class BackendOutput(_message.Message):
     __slots__ = ("output",)

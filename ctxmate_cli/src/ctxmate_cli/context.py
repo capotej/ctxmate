@@ -3,7 +3,7 @@ import os
 
 
 class Context:
-    """Context is a manager abstracts the concatenation of streams into the final context"""
+    """Context efficiently manages the concatenation of system promps, prompts, and files into a final context"""
 
     def __init__(self):
         self.system_prompt_buffer = io.BytesIO()

@@ -9,8 +9,3 @@ class BuiltinPromptLoader(DictLoader):
             "system.txt": "You are a helpful assistant",
         }
         super().__init__(builtins)
-
-    def list_templates(self):
-        all: list[str] = super().list_templates()
-        filter_system = lambda x: None if x == "system.txt" else x
-        return list(filter(filter_system, all))

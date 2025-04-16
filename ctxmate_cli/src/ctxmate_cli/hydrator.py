@@ -50,7 +50,7 @@ def handle_possible_url(url: str) -> str:
 class Hydrator:
     """
     Hydrator is in charge of receiving a tuple[str] and turning it into a dict
-    suitable for a Jinja2 rendering, str being string of format of key=value, where value can be
+    suitable for Jinja2 rendering, str being string of format of key=value, where value can be
     a literal string or URL like https:// for the web or file:// for file contents
     """
 

@@ -14,6 +14,8 @@ def test_project_prompts():
     list_templates = p.list_templates()
     list_templates.sort()
     expected_templates = [
+        "project.txt",
+        "system.txt",
         "003-test-descriptions.txt",
         "002-test-variables.txt",
         "001-generate-readme.txt",
@@ -26,6 +28,6 @@ def test_builtin_prompts():
     p = BuiltinPromptLoader()
     list_templates = p.list_templates()
     list_templates.sort()
-    expected_templates = ["summarize.txt"]
+    expected_templates = ["summarize.txt", "system.txt"]
     expected_templates.sort()
     assert list_templates == expected_templates
