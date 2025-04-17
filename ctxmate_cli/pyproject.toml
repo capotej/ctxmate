@@ -47,6 +47,7 @@ ctxmate-echo-backend = { path = "../ctxmate_echo_backend" }
 dev = [
     "black>=25.1.0",
     "pytest>=8.3.5",
+    "ruff>=0.11.6",
 ]
 
 [tool.pytest.ini_options]
