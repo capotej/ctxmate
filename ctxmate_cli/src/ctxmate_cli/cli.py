@@ -89,7 +89,9 @@ def prompts(prompts_dir: str):
     table.add_column("Description")
 
     loader = rdr.loader
-    overrides_default_system_prompt: bool = len([x for x in loader.list_templates() if "project/system.txt" in x]) == 0
+    overrides_default_system_prompt: bool = (
+        len([x for x in loader.list_templates() if "project/system.txt" in x]) == 0
+    )
 
     for t in loader.list_templates():
         # TODO move to renderer
@@ -104,7 +106,7 @@ def prompts(prompts_dir: str):
         else:
             if "builtin/system.txt" in t:
                 table.add_row(t, ",".join(list(undeclared)), "Yes", description)
-            
+
         if "project/project.txt" in t in t:
             table.add_row(t, ",".join(list(undeclared)), "Yes", description)
         else:

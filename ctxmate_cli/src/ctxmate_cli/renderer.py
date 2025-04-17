@@ -9,7 +9,6 @@ from ctxmate_cli.project_prompt_loader import ProjectPromptLoader
 from ctxmate_cli.builtin_prompt_loader import BuiltinPromptLoader
 
 
-
 def find_description(ast: nodes.Template):
     for n in ast.find_all(nodes.Assign):
         name = n.find(nodes.Name)

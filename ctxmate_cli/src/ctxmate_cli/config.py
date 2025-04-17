@@ -1,5 +1,3 @@
-
-
 class Config:
     """
     Handles reading from CLI arguments or ctxmate.toml found in root directory
