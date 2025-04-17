@@ -37,9 +37,6 @@ def test_url_file_args():
 
 
 def test_url_http_args():
-    current_file_path = os.path.abspath(__file__)
-    current_file_base = os.path.dirname(current_file_path)
-
     args: tuple[str, ...] = ("mysite=http://example.com",)
     d = Hydrator(args)
     assert "Example Domain" in d.dict()["mysite"]

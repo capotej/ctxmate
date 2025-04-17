@@ -13,11 +13,11 @@ from ctxmate_cli.builtin_prompt_loader import BuiltinPromptLoader
 def find_description(ast: nodes.Template):
     for n in ast.find_all(nodes.Assign):
         name = n.find(nodes.Name)
-        if name == None:
+        if name is None:
             continue
         if name.name == "description":
             value = n.find(nodes.Const)
-            if value == None:
+            if value is None:
                 continue
             return value.value
 
