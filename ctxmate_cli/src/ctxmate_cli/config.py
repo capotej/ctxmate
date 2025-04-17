@@ -1,4 +1,3 @@
-import toml
 
 
 class Config:

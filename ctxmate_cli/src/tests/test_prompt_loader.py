@@ -1,9 +1,7 @@
 from ctxmate_cli.config import Config
 from ctxmate_cli.project_prompt_loader import ProjectPromptLoader
 from ctxmate_cli.builtin_prompt_loader import BuiltinPromptLoader
-import pytest
 import os
-import sys
 
 
 def test_project_prompts():

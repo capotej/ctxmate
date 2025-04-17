@@ -1,5 +1,4 @@
-from jinja2 import DictLoader, TemplateNotFound
-from ctxmate_cli.config import Config
+from jinja2 import DictLoader
 
 
 class BuiltinPromptLoader(DictLoader):

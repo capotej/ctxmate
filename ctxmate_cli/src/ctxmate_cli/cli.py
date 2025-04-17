@@ -2,8 +2,6 @@ import click
 import io
 import subprocess
 from ctxmate_schema import schema_pb2
-import sys
-from rich import console
 from rich.console import Console
 from rich.table import Table
 from jinja2 import Environment, meta

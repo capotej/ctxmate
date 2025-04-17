@@ -1,5 +1,4 @@
 from collections import deque
-from typing import Callable
 from jinja2 import Environment, PrefixLoader, TemplateNotFound, Template
 from jinja2 import nodes
 from dataclasses import dataclass
@@ -9,8 +8,6 @@ from ctxmate_cli.context import Context
 from ctxmate_cli.project_prompt_loader import ProjectPromptLoader
 from ctxmate_cli.builtin_prompt_loader import BuiltinPromptLoader
 
-import io
-import os
 
 
 def find_description(ast: nodes.Template):

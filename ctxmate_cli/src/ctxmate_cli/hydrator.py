@@ -29,7 +29,7 @@ def handle_file(pr: ParseResult) -> str:
         return file_content
     except FileNotFoundError:
         return ""
-    except Exception as e:
+    except Exception:
         return ""
 
 

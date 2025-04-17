@@ -1,6 +1,5 @@
 from ctxmate_cli.config import Config
 from ctxmate_cli.renderer import Renderer
-import pytest
 import os
 
 

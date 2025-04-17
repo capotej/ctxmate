@@ -1,7 +1,6 @@
 """Handles appending files to the context, respecting .gitignore"""
 
 import os
-import io
 import glob
 from typing import Callable
 from gitignore_parser import parse_gitignore
