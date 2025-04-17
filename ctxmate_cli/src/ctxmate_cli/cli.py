@@ -23,8 +23,9 @@ def cli():
 @click.option(
     "--backend", "-b", show_default=True, default="ctxmate-echo-backend", required=False
 )
+# TODO take multiple prompt dirs
 @click.option(
-    "--prompts-dir", "-P", show_default=True, default="prompts", required=False
+    "--prompts-dir", "-P", show_default=True, default="prompts", required=False, multiple=True
 )
 @click.option("--include", "-I", required=False, multiple=True)
 @click.argument("input", type=click.File("r"), required=False)
@@ -70,10 +71,9 @@ def render(
     console.print(bo.output)
 
 
-# TODO show system and project prompts
 @click.command()
 @click.option(
-    "--prompts-dir", "-P", show_default=True, default="prompts", required=False
+    "--prompts-dir", "-P", show_default=True, default="project:prompts", required=False, multiple=True
 )
 def prompts(prompts_dir: str):
     """
