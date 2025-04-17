@@ -1,6 +1,7 @@
 import click
 import io
 import subprocess
+from ctxmate_cli.loading.manager import Manager
 from ctxmate_schema import schema_pb2
 from rich.console import Console
 from rich.table import Table
@@ -80,7 +81,9 @@ def prompts(prompts_dir: str):
     ctxmate prompts
     """
     cfg = Config(prompts_directory=prompts_dir)
-    rdr = Renderer(cfg)
+    manager = Manager()
+    manager.add_prompt_dir("project", cfg.prompts_directory)
+    rdr = Renderer(manager)
     env = Environment()
     table = Table(title="Available Prompts")
     table.add_column("Name")
@@ -88,7 +91,7 @@ def prompts(prompts_dir: str):
     table.add_column("Included By Default")
     table.add_column("Description")
 
-    loader = rdr.loader
+    loader = manager.loader()
     overrides_default_system_prompt: bool = (
         len([x for x in loader.list_templates() if "project/system.txt" in x]) == 0
     )
