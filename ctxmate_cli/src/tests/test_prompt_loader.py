@@ -8,10 +8,9 @@ from ctxmate_cli.loading.manager import Manager
 def test_project_prompts():
     current_file_path = os.path.abspath(__file__)
     current_file_base = os.path.dirname(current_file_path)
-    cfg = Config(prompts_directory=current_file_base + "/prompts")
-    manager = Manager()
-    manager.add_prompt_dir("project", cfg.prompts_directory)
-    list_templates = manager.loaders['project'].list_templates()
+    prompt_dir = current_file_base + "/prompts"
+    cfg = Config(prompts_directory=["project:" + prompt_dir])
+    list_templates = cfg.manager.loaders["project"].list_templates()
     list_templates.sort()
     expected_templates = [
         "project.txt",

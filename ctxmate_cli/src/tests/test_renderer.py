@@ -1,5 +1,4 @@
 from ctxmate_cli.config import Config
-from ctxmate_cli.loading.manager import Manager
 from ctxmate_cli.renderer import Renderer
 import os
 
@@ -7,10 +6,10 @@ import os
 def test_render():
     current_file_path = os.path.abspath(__file__)
     current_file_base = os.path.dirname(current_file_path)
-    cfg = Config(prompts_directory=current_file_base + "/prompts")
-    manager = Manager()
-    manager.add_prompt_dir("project", cfg.prompts_directory)
-    rdr = Renderer(manager)
+    prompt_dir = current_file_base + "/prompts"
+    cfg = Config(prompts_directory=["project:" + prompt_dir])
+    rdr = Renderer(cfg.manager)
+
     rdr.add_prompt("project/001-generate-readme.txt")
 
     with open(current_file_base + "/prompts/project.txt", "r") as f:

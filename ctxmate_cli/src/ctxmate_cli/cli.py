@@ -1,7 +1,6 @@
 import click
 import io
 import subprocess
-from ctxmate_cli.loading.manager import Manager
 from ctxmate_schema import schema_pb2
 from rich.console import Console
 from rich.table import Table
@@ -18,15 +17,18 @@ def cli():
 
 
 @click.command()
-# TODO should we take multiple prompts?
 @click.argument("prompt", nargs=1)
 @click.option("--define", "-D", multiple=True)
 @click.option(
     "--backend", "-b", show_default=True, default="ctxmate-echo-backend", required=False
 )
-# TODO take multiple prompt dirs
 @click.option(
-    "--prompts-dir", "-P", show_default=True, default="prompts", required=False, multiple=True
+    "--prompts-dir",
+    "-P",
+    show_default=True,
+    default=["project:prompts"],
+    required=False,
+    multiple=True,
 )
 @click.option("--include", "-I", required=False, multiple=True)
 @click.argument("input", type=click.File("r"), required=False)
@@ -44,10 +46,9 @@ def render(
     ctxmate render builtin/summarize.txt -D a_variable=foo -D b_variable=bar
     """
     cfg = Config(backend=backend, prompts_directory=prompts_dir)
+    describe(cfg)
     files = Files(include)
-    rdr = Renderer(cfg)
-    # console.print(files.render_files())
-
+    rdr = Renderer(cfg.manager)
     h = Hydrator(define)
     vars = h.dict()
     if input:
@@ -74,16 +75,18 @@ def render(
 
 @click.command()
 @click.option(
-    "--prompts-dir", "-P", show_default=True, default="project:prompts", required=False, multiple=True
+    "--prompts-dir",
+    "-P",
+    show_default=True,
+    default=["project:prompts"],
+    required=False,
+    multiple=True,
 )
-def prompts(prompts_dir: str):
+def prompts(prompts_dir: list[str]):
     """
     ctxmate prompts
     """
     cfg = Config(prompts_directory=prompts_dir)
-    manager = Manager()
-    manager.add_prompt_dir("project", cfg.prompts_directory)
-    rdr = Renderer(manager)
     env = Environment()
     table = Table(title="Available Prompts")
     table.add_column("Name")
@@ -91,7 +94,7 @@ def prompts(prompts_dir: str):
     table.add_column("Included By Default")
     table.add_column("Description")
 
-    loader = manager.loader()
+    loader = cfg.manager.loader()
     overrides_default_system_prompt: bool = (
         len([x for x in loader.list_templates() if "project/system.txt" in x]) == 0
     )
