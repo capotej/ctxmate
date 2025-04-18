@@ -1,5 +1,13 @@
 from ctxmate_cli.loading.manager import Manager
 
+def add_prompts_to_manager(manager: Manager, prompt_dir: str) -> None:
+    if ":" not in prompt_dir:
+        raise Exception(
+            "malformed input: '{}', needs to be '<namespace>:<path>'".format(prompt_dir)
+        )
+    parts = prompt_dir.split(":", 1)
+    manager.add_prompt_dir(parts[0], parts[1])
+
 
 class Config:
     """
@@ -14,16 +22,12 @@ class Config:
 
     def __init__(
         self,
-        prompts_directory: list[str] = ["project:prompts"],
+        prompts_dir: list[str] = ["project:prompts"],
+        extra_prompts_dir: list[str] = [],
         backend: str = "ctxmate-echo-backend",
     ):
         self.manager: Manager = Manager()
-        for p in prompts_directory:
-            if ":" not in p:
-                raise Exception(
-                    "malformed input: '{}', needs to be '<namespace>:<path>'".format(p)
-                )
-            parts = p.split(":", 1)
-            self.manager.add_prompt_dir(parts[0], parts[1])
+        [ add_prompts_to_manager(self.manager, x) for x in prompts_dir]
+        [ add_prompts_to_manager(self.manager, x) for x in extra_prompts_dir]
 
         self.backend: str = backend

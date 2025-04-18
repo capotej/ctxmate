@@ -17,18 +17,24 @@ def cli():
 
 
 @click.command()
+@click.option(
+    "--prompts-dir",
+    show_default=True,
+    default=["project:prompts"],
+    help="directory to load prompts from, in the form of <namespace>:<path/to/prompts>, can be repeated per namespace and path",
+    required=False,
+    multiple=True,
+)
+@click.option(
+    "--extra-prompts-dir",
+    required=False,
+    help="directory to load prompts from, in addition to --prompts-dir, in the form of <namespace>:<path/to/prompts>, can be repeated per namespace and path",
+    multiple=True,
+)
 @click.argument("prompt", nargs=1)
 @click.option("--define", "-D", multiple=True)
 @click.option(
     "--backend", "-b", show_default=True, default="ctxmate-echo-backend", required=False
-)
-@click.option(
-    "--prompts-dir",
-    "-P",
-    show_default=True,
-    default=["project:prompts"],
-    required=False,
-    multiple=True,
 )
 @click.option("--include", "-I", required=False, multiple=True)
 @click.argument("input", type=click.File("r"), required=False)
@@ -38,14 +44,15 @@ def render(
     prompt: str,
     define,
     backend: str,
-    prompts_dir: str,
+    prompts_dir: list[str],
+    extra_prompts_dir: list[str],
     include,
     input: io.BufferedReader | None,
 ):
     """
     ctxmate render builtin/summarize.txt -D a_variable=foo -D b_variable=bar
     """
-    cfg = Config(backend=backend, prompts_directory=prompts_dir)
+    cfg = Config(backend=backend, prompts_dir=prompts_dir, extra_prompts_dir=extra_prompts_dir)
     files = Files(include)
     rdr = Renderer(cfg.manager)
     h = Hydrator(define)
@@ -75,17 +82,23 @@ def render(
 @click.command()
 @click.option(
     "--prompts-dir",
-    "-P",
     show_default=True,
     default=["project:prompts"],
+    help="directory to load prompts from, in the form of <namespace>:<path/to/prompts>, can be repeated per namespace and path",
     required=False,
     multiple=True,
 )
-def prompts(prompts_dir: list[str]):
+@click.option(
+    "--extra-prompts-dir",
+    required=False,
+    help="directory to load prompts from, in addition to --prompts-dir, in the form of <namespace>:<path/to/prompts>, can be repeated per namespace and path",
+    multiple=True,
+)
+def prompts(prompts_dir: list[str], extra_prompts_dir: list[str]):  
     """
-    ctxmate prompts
+    Prints out all of the available prompts ctxmate can use
     """
-    cfg = Config(prompts_directory=prompts_dir)
+    cfg = Config(prompts_dir=prompts_dir, extra_prompts_dir=extra_prompts_dir)
     env = Environment()
     table = Table(title="Available Prompts")
     table.add_column("Name")
