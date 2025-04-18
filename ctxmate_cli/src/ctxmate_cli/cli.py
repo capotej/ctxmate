@@ -94,7 +94,7 @@ def render(
     help="directory to load prompts from, in addition to --prompts-dir, in the form of <namespace>:<path/to/prompts>, can be repeated per namespace and path",
     multiple=True,
 )
-def prompts(prompts_dir: list[str], extra_prompts_dir: list[str]):  
+def prompts(prompts_dir: list[str], extra_prompts_dir: list[str]):
     """
     Prints out all of the available prompts ctxmate can use
     """
