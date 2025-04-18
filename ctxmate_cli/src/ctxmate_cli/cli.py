@@ -46,7 +46,6 @@ def render(
     ctxmate render builtin/summarize.txt -D a_variable=foo -D b_variable=bar
     """
     cfg = Config(backend=backend, prompts_directory=prompts_dir)
-    describe(cfg)
     files = Files(include)
     rdr = Renderer(cfg.manager)
     h = Hydrator(define)

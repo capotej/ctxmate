@@ -2,8 +2,6 @@ from ctxmate_cli.config import Config
 from ctxmate_cli.loading.builtin_prompt_loader import BuiltinPromptLoader
 import os
 
-from ctxmate_cli.loading.manager import Manager
-
 
 def test_project_prompts():
     current_file_path = os.path.abspath(__file__)

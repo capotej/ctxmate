@@ -20,7 +20,9 @@ class Config:
         self.manager: Manager = Manager()
         for p in prompts_directory:
             if ":" not in p:
-                raise Exception("malformed input: '{}', needs to be '<namespace>:<path>'".format(p))
+                raise Exception(
+                    "malformed input: '{}', needs to be '<namespace>:<path>'".format(p)
+                )
             parts = p.split(":", 1)
             self.manager.add_prompt_dir(parts[0], parts[1])
 
