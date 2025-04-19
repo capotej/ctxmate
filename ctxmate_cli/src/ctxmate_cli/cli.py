@@ -5,7 +5,7 @@ from ctxmate_schema import schema_pb2
 from rich.console import Console
 from rich.table import Table
 from jinja2 import Environment, meta
-from ctxmate_cli.config import Config, default_config
+from ctxmate_cli.config import Config
 from ctxmate_cli.renderer import Renderer, find_description
 from ctxmate_cli.hydrator import Hydrator
 from ctxmate_cli.files import Files
