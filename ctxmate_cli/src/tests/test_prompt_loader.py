@@ -7,8 +7,9 @@ def test_project_prompts():
     current_file_path = os.path.abspath(__file__)
     current_file_base = os.path.dirname(current_file_path)
     prompt_dir = current_file_base + "/prompts"
-    cfg = Config(prompts_directory=["project:" + prompt_dir])
-    list_templates = cfg.manager.loaders["project"].list_templates()
+    namespaced_prompt_dir="project:{}".format(prompt_dir)
+    cfg = Config(prompts_dir=(namespaced_prompt_dir,), backend="a", extra_prompts_dir=())
+    list_templates = cfg.manager().loaders["project"].list_templates()
     list_templates.sort()
     expected_templates = [
         "project.txt",

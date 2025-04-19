@@ -5,7 +5,7 @@ from ctxmate_schema import schema_pb2
 from rich.console import Console
 from rich.table import Table
 from jinja2 import Environment, meta
-from ctxmate_cli.config import Config
+from ctxmate_cli.config import Config, default_config
 from ctxmate_cli.renderer import Renderer, find_description
 from ctxmate_cli.hydrator import Hydrator
 from ctxmate_cli.files import Files
@@ -44,8 +44,8 @@ def render(
     prompt: str,
     define,
     backend: str,
-    prompts_dir: list[str],
-    extra_prompts_dir: list[str],
+    prompts_dir: tuple[str],
+    extra_prompts_dir: tuple[str],
     include,
     input: io.BufferedReader | None,
 ):
@@ -54,7 +54,7 @@ def render(
     """
     cfg = Config(backend=backend, prompts_dir=prompts_dir, extra_prompts_dir=extra_prompts_dir)
     files = Files(include)
-    rdr = Renderer(cfg.manager)
+    rdr = Renderer(cfg.manager())
     h = Hydrator(define)
     vars = h.dict()
     if input:
@@ -94,11 +94,13 @@ def render(
     help="directory to load prompts from, in addition to --prompts-dir, in the form of <namespace>:<path/to/prompts>, can be repeated per namespace and path",
     multiple=True,
 )
-def prompts(prompts_dir: list[str], extra_prompts_dir: list[str]):
+def prompts(prompts_dir: tuple[str, ...], extra_prompts_dir: tuple[str, ...]):
     """
     Prints out all of the available prompts ctxmate can use
     """
-    cfg = Config(prompts_dir=prompts_dir, extra_prompts_dir=extra_prompts_dir)
+    cfg = Config(
+        prompts_dir=prompts_dir, extra_prompts_dir=extra_prompts_dir, backend="ctxmate-echo-backend"
+    )
     env = Environment()
     table = Table(title="Available Prompts")
     table.add_column("Name")
@@ -106,7 +108,7 @@ def prompts(prompts_dir: list[str], extra_prompts_dir: list[str]):
     table.add_column("Included By Default")
     table.add_column("Description")
 
-    loader = cfg.manager.loader()
+    loader = cfg.manager().loader()
     overrides_default_system_prompt: bool = (
         len([x for x in loader.list_templates() if "project/system.txt" in x]) == 0
     )

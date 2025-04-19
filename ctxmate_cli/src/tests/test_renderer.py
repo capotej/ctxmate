@@ -7,8 +7,9 @@ def test_render():
     current_file_path = os.path.abspath(__file__)
     current_file_base = os.path.dirname(current_file_path)
     prompt_dir = current_file_base + "/prompts"
-    cfg = Config(prompts_dir=["project:" + prompt_dir])
-    rdr = Renderer(cfg.manager)
+    namespaced_prompt_dir = "project:{}".format(prompt_dir)
+    cfg = Config(prompts_dir=(namespaced_prompt_dir,), extra_prompts_dir=(), backend="a")
+    rdr = Renderer(cfg.manager())
 
     rdr.add_prompt("project/001-generate-readme.txt")
 
