@@ -117,7 +117,6 @@ def prompts(prompts_dir: tuple[str, ...], extra_prompts_dir: tuple[str, ...]):
         # TODO move to renderer
         tmpl = loader.get_source(env, t)
         ast = env.parse(tmpl[0])
-        # print(ast.dump())
         undeclared = meta.find_undeclared_variables(ast)
         description = find_description(ast)
         if overrides_default_system_prompt:

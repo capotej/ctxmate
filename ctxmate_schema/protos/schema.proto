@@ -5,6 +5,13 @@ package ctxmate_schema;
 message BackendInput {
     bytes system_prompt = 1;
     bytes context = 2;
+    optional float temperature = 3;
+    optional float top_p = 4;
+    optional float min_p = 5;
+    optional float top_k = 6;
+    optional int32 min_tokens_to_keep = 7;
+    optional int32 seed = 8;
+    optional bytes image = 9;
 }
 
 message BackendOutput {

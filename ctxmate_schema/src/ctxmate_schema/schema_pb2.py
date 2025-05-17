@@ -24,15 +24,15 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cschema.proto\x12\x0e\x63txmate_schema\"6\n\x0c\x42\x61\x63kendInput\x12\x15\n\rsystem_prompt\x18\x01 \x01(\x0c\x12\x0f\n\x07\x63ontext\x18\x02 \x01(\x0c\"\x1f\n\rBackendOutput\x12\x0e\n\x06output\x18\x01 \x01(\x0c\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cschema.proto\x12\x0e\x63txmate_schema\"\xac\x02\n\x0c\x42\x61\x63kendInput\x12\x15\n\rsystem_prompt\x18\x01 \x01(\x0c\x12\x0f\n\x07\x63ontext\x18\x02 \x01(\x0c\x12\x18\n\x0btemperature\x18\x03 \x01(\x02H\x00\x88\x01\x01\x12\x12\n\x05top_p\x18\x04 \x01(\x02H\x01\x88\x01\x01\x12\x12\n\x05min_p\x18\x05 \x01(\x02H\x02\x88\x01\x01\x12\x12\n\x05top_k\x18\x06 \x01(\x02H\x03\x88\x01\x01\x12\x1f\n\x12min_tokens_to_keep\x18\x07 \x01(\x05H\x04\x88\x01\x01\x12\x11\n\x04seed\x18\x08 \x01(\x05H\x05\x88\x01\x01\x12\x12\n\x05image\x18\t \x01(\x0cH\x06\x88\x01\x01\x42\x0e\n\x0c_temperatureB\x08\n\x06_top_pB\x08\n\x06_min_pB\x08\n\x06_top_kB\x15\n\x13_min_tokens_to_keepB\x07\n\x05_seedB\x08\n\x06_image\"\x1f\n\rBackendOutput\x12\x0e\n\x06output\x18\x01 \x01(\x0c\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'schema_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_BACKENDINPUT']._serialized_start=32
-  _globals['_BACKENDINPUT']._serialized_end=86
-  _globals['_BACKENDOUTPUT']._serialized_start=88
-  _globals['_BACKENDOUTPUT']._serialized_end=119
+  _globals['_BACKENDINPUT']._serialized_start=33
+  _globals['_BACKENDINPUT']._serialized_end=333
+  _globals['_BACKENDOUTPUT']._serialized_start=335
+  _globals['_BACKENDOUTPUT']._serialized_end=366
 # @@protoc_insertion_point(module_scope)
