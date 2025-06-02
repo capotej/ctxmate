@@ -5,6 +5,6 @@ description = "Generated Protobuf types for ctxmate"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "protobuf~=6.30.2",
+    "protobuf~=6.31.1",
     "types-protobuf~=6.30.2"
 ]
